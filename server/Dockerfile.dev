@@ -1,0 +1,9 @@
+# specify base image from dockerhub
+FROM node:18
+LABEL version="1.0"
+LABEL description="Development image for the Codex MERN API"
+WORKDIR /app
+COPY package.json .
+RUN npm install
+COPY . ./
+CMD ["npm","run","dev"]

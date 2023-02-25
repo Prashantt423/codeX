@@ -1,0 +1,79 @@
+version: "3.9"
+services:
+   codex-api:
+      restart: always
+      build:
+         context: ./server
+         dockerfile: Dockerfile
+      container_name: codex_mern_api
+      # volumes allow sharing of data in run-time between host and container
+      volumes:
+         # map current local directory to the /app inside the container
+         #This is a must for development in order to update our container whenever a change to the source code is made. Without this, you would have to rebuild the image each time you make a change to source code.
+         - ./server:/app
+        #  # don't overwrite this folder in container with the local one
+         - /server/node_modules
+      ports:
+         - 5000:5000
+      depends_on:
+         - mongodb
+      networks:
+         - codex_mern_api
+      environment:
+        - MONGO_URL=${MONGO_URL}
+        - PORT=${PORT}
+        - NODE_ENV=${NODE_ENV}
+   mongodb:
+      image: mongo
+      restart: always
+      ports:
+         - 27017:27017
+      volumes:
+         # for persistence storage
+         - mongodb-data:/data/db
+      networks:
+         - codex_mern_api
+
+   client:
+      restart: always
+      build:
+         context: ./client
+         dockerfile: Dockerfile
+      container_name: codex_mern_frontend
+      volumes:
+         - ./client:/app
+         - /client/node_modules
+      ports:
+         - 3000:3000
+      depends_on:
+         - codex-api
+      networks:
+         - codex_mern_api
+   nginx:
+      restart: always
+      depends_on:
+         - codex-api
+         - client
+      build:
+         context: ./nginx
+         dockerfile: Dockerfile
+      ports:
+         - 8080:80
+      networks:
+         - codex_mern_api
+   redis:
+     image: redis
+     ports:
+       - 6379:6379
+     volumes:
+       - .db:/data
+     restart: always
+     entrypoint: redis-server --appendonly yes
+     networks:
+         - codex_mern_api
+networks:
+   codex_mern_api:
+      driver: bridge
+volumes:
+   mongodb-data:
+      driver: local

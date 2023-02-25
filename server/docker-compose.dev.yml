@@ -1,0 +1,19 @@
+version: "3"
+services:
+  node-app:
+    build: 
+      context: .
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - MONGO_URL=mongodb://mongo:27017/codex
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_SESSION_SECRET=secretmessage
+    command: npm run dev
+    # env_file:
+    #   - ./.env
