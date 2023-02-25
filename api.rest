@@ -1,0 +1,38 @@
+POST http://127.0.0.1:5000/api/v1/problem/add HTTP/1.1
+content-type: application/json
+
+
+{
+    "statement":"Given 2 numbers find the sum.",
+    "output":"10\n17\n199\n90",
+    "input":"4\r\n4 6\r\n8 9\r\n99 100\r\n67 23"
+
+}
+
+###
+GET http://127.0.0.1:5000/api/v1/problem/get?id=63f4ffe1656a13e8fc9ae50a HTTP/1.1
+
+###
+GET http://127.0.0.1:5000/api/v1/problem/getAll HTTP/1.1
+
+###
+GET http://127.0.0.1:5000/api/v1/readiness HTTP/1.1
+
+###
+
+POST http://127.0.0.1:5000/api/v1/job/run
+content-type: application/json
+
+# {
+#     "language":"py",
+#     "code":"print(\"Hello World!\")"
+    
+# }
+{
+    "language":"cpp",
+    "problemId":"63fa4c458103b07e65d1b8b2",
+    "code":"#include <bits/stdc++.h>\r\nusing namespace std;\r\nint main(){\r\n\tint tc; cin >> tc;\r\n\twhile(tc--){\r\n\t\tint a,b; cin >> a >> b;\r\n\t\tcout << a+b << endl;\r\n\t}\r\n}"
+}
+###
+
+GET http://127.0.0.1:5000/api/v1/job/status?id=63f504017a878586d31f502e

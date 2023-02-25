@@ -1,0 +1,37 @@
+GET http://47.88.89.65/api/v1/readiness HTTP/1.1
+###
+
+
+POST http://47.88.89.65/api/v1/job/run
+content-type: application/json
+
+# {
+#     "language":"py",
+#     "code":"print(\"Hello World!\")"
+    
+# }
+
+{
+    "language":"cpp",
+    "problemId":"63f8e89e6482eed36e76c14a",
+    "code":"#include <bits/stdc++.h>\r\nusing namespace std;\r\nint main(){\r\n\tint tc; cin >> tc;\r\n\twhile(tc--){\r\n\t\tint a,b; cin >> a >> b;\r\n\t\tcout << a+b << endl;\r\n\t}\r\n}"
+}
+
+###
+POST http://47.88.89.65/api/v1/problem/add HTTP/1.1
+content-type: application/json
+
+
+{
+    "statement":"Given 2 numbers find the sum.",
+    "output":"10\n17\n1789\n90",
+    "input":"4\r\n4 6\r\n8 9\r\n19 1770\r\n67 23"
+
+}
+###
+
+GET http://47.88.89.65/api/v1/job/status?id=63f8e8d76482eed36e76c14d
+
+###
+
+GET http://47.88.89.65/api/v1/problem/getAll HTTP/1.1
