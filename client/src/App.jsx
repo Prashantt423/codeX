@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import stubs from "./stubs";
+const server_url = "http://127.0.0.1:5000/"
 function App() {
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
@@ -20,7 +21,7 @@ function App() {
   const[disableSubmit,setDisable] = useState(false);
   const fetchQuestions = async () => {
     try {
-      const { data } = await axios.get("/api/v1/problem/getAll");
+      const { data } = await axios.get(server_url+"api/v1/problem/getAll");
       console.log(data.problems);
       setQuestions(data.problems);
     } catch (e) {
@@ -60,14 +61,14 @@ function App() {
       setStatus(null);
       setJobId(null);
       setJobDetails(null);
-      const { data } = await axios.post("/api/v1/job/run", payload);
+      const { data } = await axios.post(server_url+"api/v1/job/run", payload);
       if (data.jobId) {
         setJobId(data.jobId);
         setStatus("Submitted.");
 
         // poll here
         pollInterval = setInterval(async () => {
-          const { data: statusRes } = await axios.get(`api/v1/job/status`, {
+          const { data: statusRes } = await axios.get(server_url+`api/v1/job/status`, {
             params: {
               id: data.jobId,
             },
